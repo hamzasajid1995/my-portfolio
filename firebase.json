@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "hamza-59",
+    "public": "public/app/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
