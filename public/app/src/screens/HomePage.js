@@ -52,11 +52,11 @@ class App extends Component {
     };
   }
   componentDidMount() {
-    this.rellax = new Rellax(".rellax");
+    if (window.innerWidth >= 768) this.rellax = new Rellax(".rellax");
   }
 
   componentWillUnmount() {
-    this.rellax && this.rellax.destroy && this.rellax.destroy();
+    if (window.innerWidth >= 768) this.rellax && this.rellax.destroy && this.rellax.destroy();
   }
   render() {
     return (
@@ -87,10 +87,12 @@ class App extends Component {
           className="section d-flex justify-content-center align-items-center"
           style={{ pointerEvents: "none" }}
         >
-          <div className="container py-5 rellax" data-rellax-speed="-5">
+          <div className="container py-5">
             <div className="row">
-              <div className="col">
-                <h1 className="heading">Hi, I'm Hamza Sajid</h1>
+              <div className="col rellax" data-rellax-speed="-5">
+                <h1 className="heading" style={{ color: "#fff" }}>
+                  Hi, I'm Hamza
+                </h1>
                 <AnimateTyping className="animate-typing" />
               </div>
             </div>
@@ -101,18 +103,8 @@ class App extends Component {
           <div className="container py-5">
             <div className="row">
               <div className="col">
-                <h1
-                  className="heading"
-                  style={{
-                    fontSize: "4.5rem",
-                    color: "#000",
-                    textShadow: "rgb(255 1 1 / 15%) 10px 0 1px",
-                    marginBottom: "1.5rem",
-                  }}
-                >
-                  About
-                </h1>
-                <p style={{ fontSize: "1.25rem", color: "#000" }}>
+                <h1 className="heading">About</h1>
+                <p style={{ fontSize: "1.125rem", lineHeight: "1.35rem", color: "#000" }}>
                   I'm creating noice web experiences for the next generation of consumer-facing companies
                 </p>
                 <div>
@@ -120,10 +112,10 @@ class App extends Component {
                     <h3>Education</h3>
                     <ul>
                       <li>
-                        <p className="font-weight-bold mb-0">
-                          National University of Sciences and Technology, Islamabad (Pakistan)
+                        <p className="font-weight-bold mb-0">NUST, Islamabad (Pakistan)</p>
+                        <p style={{ fontStyle: "italic" }} className="text-secondary">
+                          Bachelors of Science in Computer Science (2013 - 2017)
                         </p>
-                        <p className="text-secondary">Bachelors of Science in Computer Science (2013 - 2017)</p>
                       </li>
                     </ul>
                   </div>
@@ -140,12 +132,16 @@ class App extends Component {
                             )
                           </span>
                           {" - "}Software Engineer (Front-End Development lead)
-                          <span className="text-secondary ml-3">August 2018 - PRESENT</span>
+                          <span style={{ fontStyle: "italic" }} className="text-secondary ml-3">
+                            August 2018 - PRESENT
+                          </span>
                         </li>
                         <li>
                           <span className="font-weight-bold">Simplicity Labs</span>
                           {" - "}Software Engineer
-                          <span className="text-secondary ml-3">September 2017 - June 2018</span>
+                          <span style={{ fontStyle: "italic" }} className="text-secondary ml-3">
+                            September 2017 - June 2018
+                          </span>
                         </li>
                       </ul>
                     </div>
@@ -188,24 +184,14 @@ class App extends Component {
           <div className="container py-5">
             <div className="row">
               <div className="col">
-                <h1
-                  className="heading"
-                  style={{
-                    fontSize: "4.5rem",
-                    color: "#000",
-                    textShadow: "rgb(255 1 1 / 15%) 10px 0 1px",
-                    marginBottom: "1.5rem",
-                  }}
-                >
-                  Projects
-                </h1>
+                <h1 className="heading">Projects</h1>
                 <div className="row justify-content-between">
                   {this.state.projects.map((item, index) => {
                     return (
                       <div className="col-12 col-md-6 col-lg-5" key={index}>
                         <div className="card shadow-sm my-5" style={{ width: "100%" }}>
                           <div style={{ height: "250px" }}>
-                            <Carousel controls={false} indicators={false}>
+                            <Carousel indicators={false}>
                               {item.imgs.map((item2, index2) => {
                                 return (
                                   <Carousel.Item key={index2}>
@@ -260,17 +246,7 @@ class App extends Component {
           <div className="container py-5">
             <div className="row">
               <div className="col pt-5">
-                <h1
-                  className="heading"
-                  style={{
-                    fontSize: "4.5rem",
-                    color: "#000",
-                    textShadow: "rgb(255 1 1 / 15%) 10px 0 1px",
-                    marginBottom: "1.5rem",
-                  }}
-                >
-                  Get In Touch
-                </h1>
+                <h1 className="heading">Get In Touch</h1>
                 <p>
                   Email me at <a href="mailto:hamzasajid424@gmail.com">Hamzasajid424@gmail.com</a> <br />
                   Or find me on other platforms:{" "}
@@ -310,7 +286,6 @@ function ImageAnimated(props) {
   return (
     <img
       onLoad={(e) => {
-        console.log(e);
         e.target.style.opacity = 1;
       }}
       onError={(e) => {
@@ -430,21 +405,27 @@ class AnimateTyping extends Component {
       text2 += text.charAt(this.i);
       this.i++;
       this.setState({ text: text2 }, () => {
-        setTimeout(this.typeWriter, this.speed);
+        this.timeout1 = setTimeout(this.typeWriter, this.speed);
       });
     } else {
       this.index++;
       this.i = 0;
-      setTimeout(() => {
+      this.timeout2 = setTimeout(() => {
         this.setState({ text: "" }, () => {
           if (this.index < texts.length) {
           } else {
             this.index = 0;
           }
-          setTimeout(this.typeWriter, this.speed);
+          this.timeout3 = setTimeout(this.typeWriter, this.speed);
         });
       }, 1000);
     }
+  };
+
+  componentWillUnmount = () => {
+    this.timeout1 && clearTimeout(this.timeout1);
+    this.timeout2 && clearTimeout(this.timeout2);
+    this.timeout3 && clearTimeout(this.timeout3);
   };
 
   render() {

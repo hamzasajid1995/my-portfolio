@@ -24,8 +24,8 @@
   text-shadow: rgb(255 1 1 / 15%) 10px 0 1px;
   animation: mymove 3s;
   animation-iteration-count: infinite;
+  transition: 1s;
   font-size: 4.5rem;
-  color: #fff;
   margin-bottom: 1.5rem;
   line-height: 1.25;
   letter-spacing: 0.025em;
